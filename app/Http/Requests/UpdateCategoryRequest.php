@@ -13,7 +13,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->user() !== null;
     }
 
     /**
@@ -23,8 +23,9 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules()
     {
+        //TODO
         return [
-            //
+            'name' => 'required'
         ];
     }
 }

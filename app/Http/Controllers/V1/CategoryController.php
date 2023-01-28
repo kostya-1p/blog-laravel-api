@@ -45,11 +45,21 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        if ($category->user_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        $updatedCategory = $this->categoryService->edit($category, $request->name);
+        return new CategoryResource($updatedCategory);
     }
 
-    public function destroy(Category $category)
+    public function destroy(Request $request, Category $category)
     {
-        //
+        if ($category->user_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        $this->categoryService->delete($category);
+        return response('', 204);
     }
 }
