@@ -35,9 +35,12 @@ class CategoryController extends Controller
         return new CategoryResource($category);
     }
 
-    public function show(Category $category)
+    public function show(Request $request, Category $category)
     {
-        //
+        if ($category->user_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+        return new CategoryResource($category);
     }
 
     public function update(UpdateCategoryRequest $request, Category $category)
