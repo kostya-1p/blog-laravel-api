@@ -13,7 +13,7 @@ class StoreCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return $this->user() !== null;
     }
 
     /**
@@ -23,8 +23,9 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules()
     {
+        //TODO: unique rule for two columns
         return [
-            //
+            'name'=>'required'
         ];
     }
 }

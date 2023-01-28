@@ -8,16 +8,19 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class CategoryController extends Controller
 {
     private CategoryRepositoryInterface $categoryRepository;
+    private CategoryService $categoryService;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository, CategoryService $categoryService)
     {
         $this->categoryRepository = $categoryRepository;
+        $this->categoryService = $categoryService;
     }
 
     public function index(Request $request): AnonymousResourceCollection
@@ -26,9 +29,10 @@ class CategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    public function store(StoreCategoryRequest $request)
+    public function store(StoreCategoryRequest $request): CategoryResource
     {
-        //
+        $category = $this->categoryService->make($request->name, $request->user()->id);
+        return new CategoryResource($category);
     }
 
     public function show(Category $category)
