@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Rules\CategoryUniqueNameUserId;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StoreCategoryRequest extends FormRequest
 {
@@ -23,9 +26,11 @@ class StoreCategoryRequest extends FormRequest
      */
     public function rules()
     {
-        //TODO: unique rule for two columns
         return [
-            'name'=>'required'
+            'name' => [
+                'required',
+                new CategoryUniqueNameUserId($this->user(), App::make(CategoryRepositoryInterface::class))
+            ]
         ];
     }
 }

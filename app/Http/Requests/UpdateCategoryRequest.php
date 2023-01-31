@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Rules\CategoryUniqueNameUserId;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -23,9 +26,11 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules()
     {
-        //TODO
         return [
-            'name' => 'required'
+            'name' => [
+                'required',
+                new CategoryUniqueNameUserId($this->user(), App::make(CategoryRepositoryInterface::class))
+            ]
         ];
     }
 }
