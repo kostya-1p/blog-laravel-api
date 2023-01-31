@@ -5,7 +5,6 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,5 +46,10 @@ class User extends Authenticatable
     public function categories(): Collection
     {
         return Category::where('user_id', $this->id)->get();
+    }
+
+    public function tags(): Collection
+    {
+        return Tag::where('user_id', $this->id)->get();
     }
 }

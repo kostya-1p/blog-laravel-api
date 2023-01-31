@@ -3,33 +3,33 @@
 namespace App\Rules;
 
 use App\Models\User;
-use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Interfaces\TagRepositoryInterface;
 use Illuminate\Contracts\Validation\Rule;
 
-class CategoryUniqueNameUserId implements Rule
+class TagUniqueNameUserId implements Rule
 {
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(private User $user, private CategoryRepositoryInterface $categoryRepository)
+    public function __construct(private User $user, private TagRepositoryInterface $tagRepository)
     {
     }
 
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $value
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        $userCategories = $this->categoryRepository->getUserCategories($this->user);
+        $userTags = $this->tagRepository->getUserTags($this->user);
 
-        foreach ($userCategories as $category) {
-            if (strtolower($category->name) === strtolower($value)) {
+        foreach ($userTags as $tag) {
+            if (strtolower($tag->name) === strtolower($value)) {
                 return false;
             }
         }
@@ -43,6 +43,6 @@ class CategoryUniqueNameUserId implements Rule
      */
     public function message()
     {
-        return 'This category name already exists!';
+        return 'This tag name already exists!';
     }
 }
