@@ -22,7 +22,7 @@ class ArticleController extends Controller
     {
         $userArticles = $this->articleRepository->getByUser($request->user());
 
-        $coverImageURL = $this->articleService->generateCoverImageURL($userArticles->get(0)->id, $userArticles->get(0)->cover_image_name);
+        $userArticles = $this->articleService->getArticlesWithCoverImageURL($userArticles);
     }
 
     public function store(StoreArticleRequest $request)
