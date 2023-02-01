@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('text');
             $table->unsignedBigInteger('author_id');
+            $table->string('cover_image_name');
             $table->timestamps();
 
             $table->unique(['title', 'author_id']);
