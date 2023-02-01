@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\ArticleController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\CategoryController;
 use App\Http\Controllers\V1\TagController;
@@ -26,5 +27,6 @@ Route::prefix('v1')->group(function(){
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('tags', TagController::class);
+        Route::apiResource('articles', ArticleController::class);
     });
 });

@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\ArticleRepository;
 use App\Repositories\CategoryRepository;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Repositories\TagRepository;
@@ -23,6 +25,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(TagRepositoryInterface::class, function ($app) {
             return new TagRepository();
+        });
+
+        $this->app->bind(ArticleRepositoryInterface::class, function ($app) {
+            return new ArticleRepository();
         });
     }
 

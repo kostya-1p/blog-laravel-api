@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return Tag::where('user_id', $this->id)->get();
     }
+
+    public function articles(): Collection
+    {
+        return Article::where('author_id', $this->id)->get();
+    }
 }
