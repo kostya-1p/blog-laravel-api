@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateArticleRequest;
 use App\Repositories\CategoryRepository;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,8 @@ class ArticleController extends Controller
     public function __construct(
         private ArticleRepositoryInterface $articleRepository,
         private ArticleService $articleService,
-        private CategoryRepositoryInterface $categoryRepository
+        private CategoryRepositoryInterface $categoryRepository,
+        private TagRepositoryInterface $tagRepository,
     ) {
     }
 
@@ -25,7 +27,7 @@ class ArticleController extends Controller
     {
         $userArticles = $this->articleRepository->getByUser($request->user());
         $categories = $this->categoryRepository->getCategoriesForArticleCollection($userArticles);
-
+        $tags = $this->tagRepository->getTagsForArticleCollection($userArticles);
         $userArticles = $this->articleService->getArticlesWithCoverImageURL($userArticles);
     }
 
