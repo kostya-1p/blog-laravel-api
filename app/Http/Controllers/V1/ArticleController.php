@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ArticleIndexingResource;
+use App\Http\Resources\ArticleShowingResource;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
@@ -39,7 +40,7 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-
+        return new ArticleShowingResource($article);
     }
 
     public function update(UpdateArticleRequest $request, Article $article)
