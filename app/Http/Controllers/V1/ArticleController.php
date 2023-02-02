@@ -39,7 +39,7 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-        //
+
     }
 
     public function update(UpdateArticleRequest $request, Article $article)

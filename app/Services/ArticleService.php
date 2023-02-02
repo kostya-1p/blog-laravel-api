@@ -24,4 +24,10 @@ class ArticleService
         return asset(self::STORAGE_FOLDER_NAME . '/' . self::ARTICLES_FOLDER_NAME . '/' .
             self::ARTICLE_ID_START_NAME . "{$articleId}/cover/{$imageName}");
     }
+
+    public function generateContentImageURL(int $articleId, string $imageName): string
+    {
+        return asset(self::STORAGE_FOLDER_NAME . '/' . self::ARTICLES_FOLDER_NAME . '/' .
+            self::ARTICLE_ID_START_NAME . "{$articleId}/{$imageName}");
+    }
 }
