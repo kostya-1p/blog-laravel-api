@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
-use App\Repositories\CategoryRepository;
 use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ArticleController extends Controller
 {
@@ -23,12 +24,12 @@ class ArticleController extends Controller
     ) {
     }
 
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $userArticles = $this->articleRepository->getByUser($request->user());
-        $categories = $this->categoryRepository->getCategoriesForArticleCollection($userArticles);
-        $tags = $this->tagRepository->getTagsForArticleCollection($userArticles);
         $userArticles = $this->articleService->getArticlesWithCoverImageURL($userArticles);
+
+        return ArticleResource::collection($userArticles);
     }
 
     public function store(StoreArticleRequest $request)
