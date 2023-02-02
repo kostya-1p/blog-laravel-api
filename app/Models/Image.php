@@ -14,12 +14,20 @@ class Image extends Model
 
     private ArticleService $articleService;
 
+    protected $fillable = [
+        'id',
+        'name',
+        'article_id',
+        'created_at',
+        'updated_at'
+    ];
+
     protected function name(): Attribute
     {
         $this->articleService = App::make(ArticleService::class);
 
         return Attribute::make(
-            get: fn($value) => $this->articleService->generateContentImageURL($this->article_id, $this->name),
+            get: fn($value) => $this->articleService->generateContentImageURL($this->article_id, $value),
         );
     }
 }

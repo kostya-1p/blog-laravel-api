@@ -18,10 +18,10 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class ArticleController extends Controller
 {
     public function __construct(
-        private ArticleRepositoryInterface $articleRepository,
-        private ArticleService $articleService,
+        private ArticleRepositoryInterface  $articleRepository,
+        private ArticleService              $articleService,
         private CategoryRepositoryInterface $categoryRepository,
-        private TagRepositoryInterface $tagRepository,
+        private TagRepositoryInterface      $tagRepository,
     ) {
     }
 
@@ -38,8 +38,12 @@ class ArticleController extends Controller
         //
     }
 
-    public function show(Article $article)
+    public function show(Request $request, Article $article): ArticleShowingResource
     {
+        if ($article->author_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
         return new ArticleShowingResource($article);
     }
 
