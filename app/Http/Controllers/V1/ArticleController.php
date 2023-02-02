@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleIndexingResource;
 use App\Models\Article;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
@@ -29,7 +29,7 @@ class ArticleController extends Controller
         $userArticles = $this->articleRepository->getByUser($request->user());
         $userArticles = $this->articleService->getArticlesWithCoverImageURL($userArticles);
 
-        return ArticleResource::collection($userArticles);
+        return ArticleIndexingResource::collection($userArticles);
     }
 
     public function store(StoreArticleRequest $request)
