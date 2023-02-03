@@ -12,6 +12,7 @@ use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Services\ArticleService;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -20,8 +21,7 @@ class ArticleController extends Controller
     public function __construct(
         private ArticleRepositoryInterface  $articleRepository,
         private ArticleService              $articleService,
-        private CategoryRepositoryInterface $categoryRepository,
-        private TagRepositoryInterface      $tagRepository,
+        private ImageService                $imageService,
     ) {
     }
 
@@ -58,6 +58,7 @@ class ArticleController extends Controller
             return abort(403, 'Unauthorized action.');
         }
 
-
+        $this->imageService->deleteCollection($article->images);
+        $this->imageService->delete();
     }
 }
