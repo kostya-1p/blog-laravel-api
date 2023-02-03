@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->group(function(){
+Route::prefix('v1')->group(function () {
     Route::controller(AuthController::class)->group(function () {
         Route::post('/auth/register', 'register')->name('register');
         Route::post('/auth/login', 'login')->name('login');
@@ -27,6 +27,10 @@ Route::prefix('v1')->group(function(){
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('tags', TagController::class);
-        Route::apiResource('articles', ArticleController::class);
+        Route::apiResource('articles', ArticleController::class)->missing(
+            function (Request $request) {
+                return response(['message' => 'Article was not found'], 404);
+            }
+        );
     });
 });

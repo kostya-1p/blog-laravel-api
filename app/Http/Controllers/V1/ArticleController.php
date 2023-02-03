@@ -52,8 +52,12 @@ class ArticleController extends Controller
         //
     }
 
-    public function destroy(Article $article)
+    public function destroy(Request $request, Article $article)
     {
-        //
+        if ($article->author_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+
     }
 }
