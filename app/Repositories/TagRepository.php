@@ -15,6 +15,6 @@ class TagRepository implements Interfaces\TagRepositoryInterface
 
     public function getUserTags(User $user): Collection
     {
-        return $user->tags();
+        return $user->tags;
     }
 }

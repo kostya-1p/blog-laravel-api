@@ -16,6 +16,6 @@ class CategoryRepository implements CategoryRepositoryInterface
 
     public function getUserCategories(User $user): Collection
     {
-        return $user->categories();
+        return $user->categories;
     }
 }

@@ -9,6 +9,6 @@ class ArticleRepository implements Interfaces\ArticleRepositoryInterface
 {
     public function getByUser(User $user): Collection
     {
-        return $user->articles();
+        return $user->articles;
     }
 }

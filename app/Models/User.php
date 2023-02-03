@@ -4,8 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Helpers\DateFormat;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -44,18 +44,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function categories(): Collection
+    public function categories(): HasMany
     {
-        return Category::where('user_id', $this->id)->get();
+        return $this->hasMany(Category::class);
     }
 
-    public function tags(): Collection
+    public function tags(): HasMany
     {
-        return Tag::where('user_id', $this->id)->get();
+        return $this->hasMany(Tag::class);
     }
 
-    public function articles(): Collection
+    public function articles(): HasMany
     {
-        return Article::where('author_id', $this->id)->get();
+        return $this->hasMany(Article::class, 'author_id');
     }
 }
