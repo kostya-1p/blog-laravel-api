@@ -11,17 +11,21 @@ class ImageService
     public function deleteCollection(Collection $images)
     {
         foreach ($images as $image) {
-            $this->delete($image, false);
+            $this->delete($image);
         }
     }
 
-    public function delete(Image $image, bool $isCover)
+    public function delete(Image $image)
     {
         $imageName = $image->getRawOriginal('name');
         $articleId = $image->article_id;
-        $cover = $isCover ? 'cover/' : '';
 
-        Storage::disk('articles_images')->delete("/article_id_{$articleId}/{$cover}{$imageName}");
+        Storage::disk('articles_images')->delete("/article_id_{$articleId}/{$imageName}");
         $image->delete();
+    }
+
+    public function deleteCoverImage(string $imageName, int $articleId)
+    {
+        Storage::disk('articles_images')->delete("/article_id_{$articleId}/cover/{$imageName}");
     }
 }

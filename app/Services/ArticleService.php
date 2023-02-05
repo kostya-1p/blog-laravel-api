@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Article;
 use Illuminate\Database\Eloquent\Collection;
 
 class ArticleService
@@ -29,5 +30,12 @@ class ArticleService
     {
         return asset(self::STORAGE_FOLDER_NAME . '/' . self::ARTICLES_FOLDER_NAME . '/' .
             self::ARTICLE_ID_START_NAME . "{$articleId}/{$imageName}");
+    }
+
+    public function delete(Article $article)
+    {
+        $article->categories()->detach();
+        $article->tags()->detach();
+        $article->delete();
     }
 }

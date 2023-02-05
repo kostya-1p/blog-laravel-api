@@ -19,9 +19,9 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 class ArticleController extends Controller
 {
     public function __construct(
-        private ArticleRepositoryInterface  $articleRepository,
-        private ArticleService              $articleService,
-        private ImageService                $imageService,
+        private ArticleRepositoryInterface $articleRepository,
+        private ArticleService $articleService,
+        private ImageService $imageService,
     ) {
     }
 
@@ -59,6 +59,8 @@ class ArticleController extends Controller
         }
 
         $this->imageService->deleteCollection($article->images);
-        $this->imageService->delete();
+        $this->imageService->deleteCoverImage($article->cover_image_name, $article->id);
+        $this->articleService->delete($article);
+        return response('', 204);
     }
 }
