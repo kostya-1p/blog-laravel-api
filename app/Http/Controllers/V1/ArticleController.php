@@ -35,7 +35,7 @@ class ArticleController extends Controller
 
     public function store(StoreArticleRequest $request)
     {
-        //
+        dd($request->validated());
     }
 
     public function show(Request $request, Article $article): ArticleShowingResource

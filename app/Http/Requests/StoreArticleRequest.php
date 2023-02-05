@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Rules\CategoryUniqueNameUserId;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\App;
 
 class StoreArticleRequest extends FormRequest
 {
@@ -13,7 +16,7 @@ class StoreArticleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +27,13 @@ class StoreArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|max:255',
+            'text' => 'required|max:65535',
+            'categories' => 'array',
+            'tags' => 'array',
+            'categories.*' => 'max:255|distinct',
+            'tags.*' => 'max:255|distinct',
+            'cover_image' => 'required|image',
         ];
     }
 }
