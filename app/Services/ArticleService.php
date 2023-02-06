@@ -11,6 +11,16 @@ class ArticleService
     private const ARTICLES_FOLDER_NAME = 'articles_images';
     private const ARTICLE_ID_START_NAME = 'article_id_';
 
+    public function make(array $articleData, int $userId, string $imageName): Article
+    {
+        return Article::create([
+            'title' => $articleData['title'],
+            'text' => $articleData['text'],
+            'author_id' => $userId,
+            'cover_image_name' => $imageName,
+        ]);
+    }
+
     public function getArticlesWithCoverImageURL(Collection $articles): Collection
     {
         foreach ($articles as $article) {
@@ -22,14 +32,18 @@ class ArticleService
 
     public function generateCoverImageURL(int $articleId, string $imageName): string
     {
-        return asset(self::STORAGE_FOLDER_NAME . '/' . self::ARTICLES_FOLDER_NAME . '/' .
-            self::ARTICLE_ID_START_NAME . "{$articleId}/cover/{$imageName}");
+        return asset(
+            self::STORAGE_FOLDER_NAME . '/' . self::ARTICLES_FOLDER_NAME . '/' .
+            self::ARTICLE_ID_START_NAME . "{$articleId}/cover/{$imageName}"
+        );
     }
 
     public function generateContentImageURL(int $articleId, string $imageName): string
     {
-        return asset(self::STORAGE_FOLDER_NAME . '/' . self::ARTICLES_FOLDER_NAME . '/' .
-            self::ARTICLE_ID_START_NAME . "{$articleId}/{$imageName}");
+        return asset(
+            self::STORAGE_FOLDER_NAME . '/' . self::ARTICLES_FOLDER_NAME . '/' .
+            self::ARTICLE_ID_START_NAME . "{$articleId}/{$imageName}"
+        );
     }
 
     public function delete(Article $article)

@@ -35,7 +35,11 @@ class ArticleController extends Controller
 
     public function store(StoreArticleRequest $request)
     {
-        dd($request->validated());
+        $imageName = $this->imageService->generateImageName($request->file('cover_image'));
+        $article = $this->articleService->make($request->validated(), $request->user()->id, $imageName);
+        $this->imageService->saveCoverImage($article, $request->file('cover_image'), $imageName);
+
+        return $article;
     }
 
     public function show(Request $request, Article $article): ArticleShowingResource
