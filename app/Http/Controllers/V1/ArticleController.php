@@ -52,6 +52,13 @@ class ArticleController extends Controller
             $this->categoryRepository
         );
 
+        $this->tagService->attachTagsToArticle(
+            $request->tags,
+            $article,
+            $request->user(),
+            $this->tagRepository
+        );
+
         return $article;
     }
 

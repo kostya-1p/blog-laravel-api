@@ -17,4 +17,16 @@ class TagRepository implements Interfaces\TagRepositoryInterface
     {
         return $user->tags;
     }
+
+    public function getByName(User $user, string $name): ?Tag
+    {
+        $tags = $this->getUserTags($user);
+
+        foreach ($tags as $tag) {
+            if (strtolower($tag->name) === strtolower($name)) {
+                return $tag;
+            }
+        }
+        return null;
+    }
 }
