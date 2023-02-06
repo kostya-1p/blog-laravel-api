@@ -12,7 +12,9 @@ use App\Repositories\Interfaces\ArticleRepositoryInterface;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Services\ArticleService;
+use App\Services\CategoryService;
 use App\Services\ImageService;
+use App\Services\TagService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -22,6 +24,10 @@ class ArticleController extends Controller
         private ArticleRepositoryInterface $articleRepository,
         private ArticleService $articleService,
         private ImageService $imageService,
+        private CategoryService $categoryService,
+        private TagService $tagService,
+        private CategoryRepositoryInterface $categoryRepository,
+        private TagRepositoryInterface $tagRepository
     ) {
     }
 
@@ -38,6 +44,13 @@ class ArticleController extends Controller
         $imageName = $this->imageService->generateImageName($request->file('cover_image'));
         $article = $this->articleService->make($request->validated(), $request->user()->id, $imageName);
         $this->imageService->saveCoverImage($article, $request->file('cover_image'), $imageName);
+
+        $this->categoryService->attachCategoriesToArticle(
+            $request->categories,
+            $article,
+            $request->user(),
+            $this->categoryRepository
+        );
 
         return $article;
     }

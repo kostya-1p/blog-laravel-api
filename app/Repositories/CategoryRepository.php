@@ -18,4 +18,16 @@ class CategoryRepository implements CategoryRepositoryInterface
     {
         return $user->categories;
     }
+
+    public function getByName(User $user, string $name): ?Category
+    {
+        $categories = $this->getUserCategories($user);
+
+        foreach ($categories as $category) {
+            if (strtolower($category->name) === strtolower($name)) {
+                return $category;
+            }
+        }
+        return null;
+    }
 }
