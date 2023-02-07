@@ -21,6 +21,23 @@ class ArticleService
         ]);
     }
 
+    public function edit(array $articleData, ImageService $imageService, Article $article): Article
+    {
+        $coverImage = $articleData['cover_image'];
+        if (isset($coverImage)) {
+            $imageService->deleteCoverImage($article->cover_image_name, $article->id);
+            $imageName = $imageService->generateImageName($coverImage);
+            $imageService->saveCoverImage($article, $coverImage, $imageName);
+            $article->cover_image_name = $imageName;
+        }
+
+        $article->title = $articleData['title'];
+        $article->text = $articleData['text'];
+
+        $article->save();
+        return $article;
+    }
+
     public function getArticlesWithCoverImageURL(Collection $articles): Collection
     {
         foreach ($articles as $article) {

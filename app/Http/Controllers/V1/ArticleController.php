@@ -75,7 +75,11 @@ class ArticleController extends Controller
 
     public function update(UpdateArticleRequest $request, Article $article)
     {
-        //
+        if ($article->author_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        dd($request->validated());
     }
 
     public function destroy(Request $request, Article $article)
