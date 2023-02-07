@@ -39,7 +39,7 @@ class ArticleController extends Controller
         return ArticleIndexingResource::collection($userArticles);
     }
 
-    public function store(StoreArticleRequest $request)
+    public function store(StoreArticleRequest $request): ArticleShowingResource
     {
         $imageName = $this->imageService->generateImageName($request->file('cover_image'));
         $article = $this->articleService->make($request->validated(), $request->user()->id, $imageName);
@@ -59,7 +59,9 @@ class ArticleController extends Controller
             $this->tagRepository
         );
 
-        return $article;
+        $this->imageService->makeAndSaveImages($request->images, $article);
+
+        return new ArticleShowingResource($article);
     }
 
     public function show(Request $request, Article $article): ArticleShowingResource

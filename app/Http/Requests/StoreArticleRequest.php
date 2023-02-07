@@ -34,6 +34,8 @@ class StoreArticleRequest extends FormRequest
             'categories.*' => 'max:255|distinct',
             'tags.*' => 'max:255|distinct',
             'cover_image' => 'required|image',
+            'images' => 'array',
+            'images.*' => 'image',
         ];
     }
 }
