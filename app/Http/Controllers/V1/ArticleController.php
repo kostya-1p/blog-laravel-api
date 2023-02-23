@@ -79,7 +79,7 @@ class ArticleController extends Controller
             return abort(403, 'Unauthorized action.');
         }
 
-        $article = $this->articleService->edit($request->validated(), $this->imageService, $article);
+        $this->articleService->edit($request->validated(), $this->imageService, $article);
 
         if (isset($request->categories)) {
             $this->categoryService->detachCategoriesFromArticle($article);
@@ -106,7 +106,7 @@ class ArticleController extends Controller
             $this->imageService->makeAndSaveImages($request->images, $article);
         }
 
-        return new ArticleShowingResource($article);
+        return new ArticleShowingResource($this->articleRepository->getById($article->id));
     }
 
     public function destroy(Request $request, Article $article)
