@@ -53,4 +53,9 @@ class TagService
     {
         $article->tags()->attach($tag->id);
     }
+
+    public function detachTagsFromArticle(Article $article)
+    {
+        $article->tags()->detach();
+    }
 }

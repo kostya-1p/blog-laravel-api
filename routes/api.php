@@ -31,6 +31,7 @@ Route::prefix('v1')->group(function () {
             function (Request $request) {
                 return response(['message' => 'Article was not found'], 404);
             }
-        );
+        )->except('update');
+        Route::post('articles/{article}', [ArticleController::class, 'update']);
     });
 });

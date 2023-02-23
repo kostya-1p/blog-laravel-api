@@ -73,13 +73,35 @@ class ArticleController extends Controller
         return new ArticleShowingResource($article);
     }
 
-    public function update(UpdateArticleRequest $request, Article $article)
+    public function update(UpdateArticleRequest $request, Article $article): ArticleShowingResource
     {
         if ($article->author_id !== $request->user()->id) {
             return abort(403, 'Unauthorized action.');
         }
 
-        dd($request->validated());
+        $article = $this->articleService->edit($request->validated(), $this->imageService, $article);
+
+        if (isset($request->categories)) {
+            $this->categoryService->detachCategoriesFromArticle($article);
+            $this->categoryService->attachCategoriesToArticle(
+                $request->categories,
+                $article,
+                $request->user(),
+                $this->categoryRepository
+            );
+        }
+
+        if (isset($request->tags)) {
+            $this->tagService->detachTagsFromArticle($article);
+            $this->tagService->attachTagsToArticle(
+                $request->tags,
+                $article,
+                $request->user(),
+                $this->tagRepository
+            );
+        }
+
+        return new ArticleShowingResource($article);
     }
 
     public function destroy(Request $request, Article $article)
