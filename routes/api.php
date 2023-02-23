@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\V1\ArticleController;
+use App\Http\Controllers\V1\ArticleImageController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\CategoryController;
 use App\Http\Controllers\V1\TagController;
@@ -27,11 +28,18 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', CategoryController::class);
         Route::apiResource('tags', TagController::class);
+
         Route::apiResource('articles', ArticleController::class)->missing(
             function (Request $request) {
                 return response(['message' => 'Article was not found'], 404);
             }
         )->except('update');
         Route::post('articles/{article}', [ArticleController::class, 'update']);
+
+        Route::apiResource('articles.images', ArticleImageController::class)->only([
+            'index',
+            'store',
+            'destroy'
+        ]);
     });
 });
