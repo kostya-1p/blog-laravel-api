@@ -23,7 +23,7 @@ class ArticleService
 
     public function edit(array $articleData, ImageService $imageService, Article $article): Article
     {
-        $coverImage = $articleData['cover_image'];
+        $coverImage = $articleData['cover_image'] ?? null;
         if (isset($coverImage)) {
             $imageService->deleteCoverImage($article->cover_image_name, $article->id);
             $imageName = $imageService->generateImageName($coverImage);

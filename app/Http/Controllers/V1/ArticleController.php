@@ -101,6 +101,11 @@ class ArticleController extends Controller
             );
         }
 
+        if (isset($request->images)) {
+            $this->imageService->deleteCollection($article->images);
+            $this->imageService->makeAndSaveImages($request->images, $article);
+        }
+
         return new ArticleShowingResource($article);
     }
 
