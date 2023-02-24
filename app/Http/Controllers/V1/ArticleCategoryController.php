@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddCategoryToArticleRequest;
+use App\Http\Resources\ArticleShowingResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Article;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ArticleCategoryController extends Controller
 {
-    public function __construct(private CategoryRepositoryInterface $categoryRepository)
-    {
+    public function __construct(
+        private CategoryRepositoryInterface $categoryRepository,
+        private CategoryService $categoryService
+    ) {
     }
 
     public function index(Article $article, Request $request): AnonymousResourceCollection
@@ -25,8 +30,19 @@ class ArticleCategoryController extends Controller
         return CategoryResource::collection($categories);
     }
 
-    public function store(Article $article)
+    public function store(Article $article, AddCategoryToArticleRequest $request): ArticleShowingResource
     {
+        if ($article->author_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
 
+        $this->categoryService->attachCategoriesToArticle(
+            [$request->name],
+            $article,
+            $request->user(),
+            $this->categoryRepository
+        );
+
+        return new ArticleShowingResource($article);
     }
 }
