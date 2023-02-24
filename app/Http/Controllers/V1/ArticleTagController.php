@@ -7,6 +7,7 @@ use App\Http\Requests\AddTagToArticleRequest;
 use App\Http\Resources\ArticleShowingResource;
 use App\Http\Resources\TagResource;
 use App\Models\Article;
+use App\Models\Tag;
 use App\Repositories\Interfaces\TagRepositoryInterface;
 use App\Services\TagService;
 use Illuminate\Http\Request;
@@ -38,5 +39,16 @@ class ArticleTagController extends Controller
 
         $this->tagService->attachTagsToArticle([$request->name], $article, $request->user(), $this->tagRepository);
         return new ArticleShowingResource($article);
+    }
+
+    public function destroy(Article $article, Tag $tag, Request $request)
+    {
+        $tags = $this->tagRepository->getByArticle($article);
+        if ($article->author_id !== $request->user()->id || !$tags->contains($tag)) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        $this->tagService->detachFromArticle($article, $tag);
+        return response('', 204);
     }
 }
