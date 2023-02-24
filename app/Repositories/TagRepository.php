@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Article;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -28,5 +29,10 @@ class TagRepository implements Interfaces\TagRepositoryInterface
             }
         }
         return null;
+    }
+
+    public function getByArticle(Article $article): Collection
+    {
+        return $article->tags;
     }
 }

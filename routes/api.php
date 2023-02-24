@@ -3,6 +3,7 @@
 use App\Http\Controllers\V1\ArticleCategoryController;
 use App\Http\Controllers\V1\ArticleController;
 use App\Http\Controllers\V1\ArticleImageController;
+use App\Http\Controllers\V1\ArticleTagController;
 use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\V1\CategoryController;
 use App\Http\Controllers\V1\TagController;
@@ -46,6 +47,12 @@ Route::prefix('v1')->group(function () {
         ]);
 
         Route::apiResource('articles.categories', ArticleCategoryController::class)->only([
+            'index',
+            'store',
+            'destroy'
+        ]);
+
+        Route::apiResource('articles.tags', ArticleTagController::class)->only([
             'index',
             'store',
             'destroy'
