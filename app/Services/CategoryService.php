@@ -59,4 +59,9 @@ class CategoryService
     {
         $article->categories()->detach();
     }
+
+    public function detachFromArticle(Article $article, Category $category)
+    {
+        $article->categories()->detach($category->id);
+    }
 }

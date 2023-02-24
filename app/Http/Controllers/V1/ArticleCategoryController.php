@@ -7,6 +7,7 @@ use App\Http\Requests\AddCategoryToArticleRequest;
 use App\Http\Resources\ArticleShowingResource;
 use App\Http\Resources\CategoryResource;
 use App\Models\Article;
+use App\Models\Category;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
@@ -44,5 +45,16 @@ class ArticleCategoryController extends Controller
         );
 
         return new ArticleShowingResource($article);
+    }
+
+    public function destroy(Article $article, Category $category, Request $request)
+    {
+        $categories = $this->categoryRepository->getByArticle($article);
+        if ($article->author_id !== $request->user()->id || !$categories->contains($category)) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        $this->categoryService->detachFromArticle($article, $category);
+        return response('', 204);
     }
 }
