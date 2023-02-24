@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AddTagToArticleRequest;
+use App\Http\Resources\ArticleShowingResource;
 use App\Http\Resources\TagResource;
 use App\Models\Article;
 use App\Repositories\Interfaces\TagRepositoryInterface;
@@ -28,8 +30,13 @@ class ArticleTagController extends Controller
         return TagResource::collection($tags);
     }
 
-    public function store(Article $article)
+    public function store(Article $article, AddTagToArticleRequest $request): ArticleShowingResource
     {
+        if ($article->author_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
 
+        $this->tagService->attachTagsToArticle([$request->name], $article, $request->user(), $this->tagRepository);
+        return new ArticleShowingResource($article);
     }
 }
