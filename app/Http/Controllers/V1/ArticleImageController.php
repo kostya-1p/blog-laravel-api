@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreImageRequest;
 use App\Http\Resources\ImageResource;
 use App\Models\Article;
+use App\Models\Image;
 use App\Repositories\Interfaces\ImageRepositoryInterface;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
@@ -13,8 +14,10 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ArticleImageController extends Controller
 {
-    public function __construct(private ImageRepositoryInterface $imageRepository, private ImageService $imageService)
-    {
+    public function __construct(
+        private ImageRepositoryInterface $imageRepository,
+        private ImageService $imageService
+    ) {
     }
 
     public function index(Article $article, Request $request): AnonymousResourceCollection
@@ -38,5 +41,14 @@ class ArticleImageController extends Controller
         $image = $this->imageService->make($imageName, $article->id);
 
         return new ImageResource($image);
+    }
+
+    public function destroy(Article $article, Image $image, Request $request)
+    {
+        if ($article->author_id !== $request->user()->id || $image->article_id !== $article->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+        $this->imageService->delete($image);
+        return response('', 204);
     }
 }
