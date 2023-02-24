@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Interfaces;
 
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Support\Collection;
@@ -13,4 +14,6 @@ interface CategoryRepositoryInterface
     public function getUserCategories(User $user): Collection;
 
     public function getByName(User $user, string $name): ?Category;
+
+    public function getByArticle(Article $article): Collection;
 }

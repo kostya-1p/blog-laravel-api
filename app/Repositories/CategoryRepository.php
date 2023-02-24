@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use App\Repositories\Interfaces\CategoryRepositoryInterface;
@@ -29,5 +30,10 @@ class CategoryRepository implements CategoryRepositoryInterface
             }
         }
         return null;
+    }
+
+    public function getByArticle(Article $article): Collection
+    {
+        return $article->categories;
     }
 }

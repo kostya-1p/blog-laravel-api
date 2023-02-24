@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\ArticleCategoryController;
 use App\Http\Controllers\V1\ArticleController;
 use App\Http\Controllers\V1\ArticleImageController;
 use App\Http\Controllers\V1\AuthController;
@@ -39,6 +40,12 @@ Route::prefix('v1')->group(function () {
         Route::patch('articles/{article}/update_text', [ArticleController::class, 'updateText']);
 
         Route::apiResource('articles.images', ArticleImageController::class)->only([
+            'index',
+            'store',
+            'destroy'
+        ]);
+
+        Route::apiResource('articles.categories', ArticleCategoryController::class)->only([
             'index',
             'store',
             'destroy'
