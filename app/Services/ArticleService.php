@@ -38,6 +38,24 @@ class ArticleService
         return $article;
     }
 
+    public function editTitle(Article $article, string $title): Article
+    {
+        $article->update([
+            'title' => $title
+        ]);
+
+        return $article;
+    }
+
+    public function editText(Article $article, string $text): Article
+    {
+        $article->update([
+            'text' => $text
+        ]);
+
+        return $article;
+    }
+
     public function getArticlesWithCoverImageURL(Collection $articles): Collection
     {
         foreach ($articles as $article) {

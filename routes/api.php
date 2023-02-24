@@ -35,6 +35,8 @@ Route::prefix('v1')->group(function () {
             }
         )->except('update');
         Route::post('articles/{article}', [ArticleController::class, 'update']);
+        Route::patch('articles/{article}/update_title', [ArticleController::class, 'updateTitle']);
+        Route::patch('articles/{article}/update_text', [ArticleController::class, 'updateText']);
 
         Route::apiResource('articles.images', ArticleImageController::class)->only([
             'index',

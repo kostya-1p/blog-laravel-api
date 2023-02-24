@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateArticleTextRequest;
+use App\Http\Requests\UpdateArticleTitleRequest;
 use App\Http\Resources\ArticleIndexingResource;
 use App\Http\Resources\ArticleShowingResource;
 use App\Models\Article;
@@ -107,6 +109,26 @@ class ArticleController extends Controller
         }
 
         return new ArticleShowingResource($this->articleRepository->getById($article->id));
+    }
+
+    public function updateTitle(UpdateArticleTitleRequest $request, Article $article): ArticleShowingResource
+    {
+        if ($article->author_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        $article = $this->articleService->editTitle($article, $request->title);
+        return new ArticleShowingResource($article);
+    }
+
+    public function updateText(UpdateArticleTextRequest $request, Article $article): ArticleShowingResource
+    {
+        if ($article->author_id !== $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        $article = $this->articleService->editText($article, $request->text);
+        return new ArticleShowingResource($article);
     }
 
     public function destroy(Request $request, Article $article)
