@@ -37,6 +37,13 @@ class ArticleTagController extends Controller
             return abort(403, 'Unauthorized action.');
         }
 
+        $tags = $this->tagRepository->getByArticle($article);
+        foreach ($tags as $tag) {
+            if ($tag->name === $request->name) {
+                return abort(400, 'Tag already attached');
+            }
+        }
+
         $this->tagService->attachTagsToArticle([$request->name], $article, $request->user(), $this->tagRepository);
         return new ArticleShowingResource($article);
     }

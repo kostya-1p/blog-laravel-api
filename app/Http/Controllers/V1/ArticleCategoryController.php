@@ -37,6 +37,13 @@ class ArticleCategoryController extends Controller
             return abort(403, 'Unauthorized action.');
         }
 
+        $categories = $this->categoryRepository->getByArticle($article);
+        foreach ($categories as $category) {
+            if ($category->name === $request->name) {
+                return abort(400, 'Category already attached');
+            }
+        }
+
         $this->categoryService->attachCategoriesToArticle(
             [$request->name],
             $article,
